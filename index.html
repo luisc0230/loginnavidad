@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>OAuth Callback Proxy</title>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Todos los parámetros que envía Azure (?code=...&state=...&session_state=...&...)
+      const query = window.location.search || '';
+
+      // Backend interno real
+      const targetBase = 'http://192.168.32.90/amigosecreto/auth/callback';
+
+      // Si quieres, puedes validar que venga "code"
+      const params = new URLSearchParams(query);
+      const code = params.get('code');
+
+      if (!code) {
+        // Opcional: mostrar error en pantalla o logearlo
+        document.body.innerText = 'Error: no se recibió código de autorización.';
+        return;
+      }
+
+      // Redirige al backend interno, preservando toda la query
+      const target = targetBase + query;
+      window.location.replace(target);
+    });
+  </script>
+</head>
+
+<body>
+  <p>Redirigiendo...</p>
+</body>
+
+</html>
